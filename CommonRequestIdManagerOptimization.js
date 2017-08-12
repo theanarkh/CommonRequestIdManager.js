@@ -18,12 +18,13 @@ function CommonRequestIdManager() {
         getRequestId: function() {
           return this.requestId;
         },
-        // 清除请求的id，把id加一，导致前面发出的请求不可用
-        clearFormerRequestBeforeRequest: function() {
+        // 清除请求的id，把id加一，导致前面发出的请求不可用，用於沒有發送新請求，但是通過其他操作取消了請求，比如點擊取消按鈕
+        clearFormerRequest: function() {
           this.hasCanceled = true;
           this.addRequestId();  
         },
-        clearFormerRequest: function() {
+        // 清除请求的id，把id加一，导致前面发出的请求不可用，用於發送新請求之前使用,如果已經通過其他操作取消了請求，則不需要再自增requestId
+        clearFormerRequestBeforeRequest: function() {
           if (!!hasCanceled) {
             return;
           }
@@ -40,6 +41,7 @@ function CommonRequestIdManager() {
         getCb: function(cb,context) {
           var self = this;
           var requestId = this.getRequestId();
+          // 每次新發送請求之前重置標記位
           this.hasCanceled = false;
            console.log(requestId)
           return function(data) {
