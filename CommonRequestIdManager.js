@@ -10,7 +10,7 @@ function CommonRequestIdManager() {
     CommonRequestIdManager.prototype = {
         // id初始化
         initRequestId: function() {
-          this.requestId = 1;
+          this.requestId = 0;
         },
         // 获取该次请求对应的id
         getRequestId: function() {
@@ -30,7 +30,6 @@ function CommonRequestIdManager() {
         // 获取该次请求对应的回调
         getCb: function(cb,context) {
           var self = this;
-
           var requestId = this.getRequestId()
            console.log(requestId)
           return function(data) {
