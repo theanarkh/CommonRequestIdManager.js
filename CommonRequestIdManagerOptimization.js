@@ -7,12 +7,14 @@ function CommonRequestIdManager() {
         }
         // 是否已經取消了請求，如果是，則新建請求之前不需要再自增requestId
         this.hasCanceled = false;
+        // 是否已經發送過請求
+        this.haveEverMakeRequest = false;
         this.initRequestId();
     }
     CommonRequestIdManager.prototype = {
         // id初始化
         initRequestId: function() {
-          this.requestId = 0;
+          this.requestId = 1;
         },
         // 获取该次请求对应的id
         getRequestId: function() {
@@ -23,9 +25,12 @@ function CommonRequestIdManager() {
           this.hasCanceled = true;
           this.addRequestId();  
         },
-        // 清除请求的id，把id加一，导致前面发出的请求不可用，用於發送新請求之前使用,如果已經通過其他操作取消了請求，則不需要再自增requestId
+        /* 
+          清除请求的id，把id加一，导致前面发出的请求不可用，用於發送新請求之前使用,
+          如果已經通過其他操作取消了請求，或者還沒有發送過請求，則不需要再自增requestId。
+        */
         clearFormerRequestBeforeRequest: function() {
-          if (!!hasCanceled) {
+          if (!!this.hasCanceled || !this.haveEverMakeRequest) {
             return;
           }
           return this.addRequestId();  
@@ -43,6 +48,7 @@ function CommonRequestIdManager() {
           var requestId = this.getRequestId();
           // 每次新發送請求之前重置標記位
           this.hasCanceled = false;
+          this.haveEverMakeRequest = true;
            console.log(requestId)
           return function(data) {
               // 对于返回的结果，判断回调函数绑定的id是否等于当前的请求id
