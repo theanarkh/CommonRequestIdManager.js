@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>my login</title>
+	<script type="text/javascript" src="jquery-1.10.2.js"></script>
+</head>
+<script type="text/javascript" src="./CommonRequestIdManager.js">
+	
+</script>
+<body>
+	<input type="text" name="name">submit
+	<script type="text/javascript">
+		var commonRequestIdManager = new CommonRequestIdManager();
+		$('input').on('keydown', function() {
+			// 清除前面发出的所有请求
+			commonRequestIdManager.clearRequestId();
+			$.ajax({
+				url: '1.php',
+				success:commonRequestIdManager.getCb(function() {
+					console.log('success')
+				}),
+				error:commonRequestIdManager.getCb(function() {
+					console.log('error')
+				})
+			})
+		})
+	</script>
+</body>
+
+</html>
