@@ -38,8 +38,6 @@ function CommonRequestIdManager() {
           return function(data) {
               // 对于返回的结果，判断回调函数绑定的id是否等于当前的请求id
               if (requestId === self.getCurrentRequestId()) {
-                  // 这一步不是必须的，加这一句是为保证每次请求的id是唯一的，如果不加这一句，会导致请求id有重复的情况，但这不会导致出错。
-                  self.clearRequestId();
                   cb && cb.call(context || null, data);
               }
           }
