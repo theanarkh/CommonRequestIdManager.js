@@ -18,6 +18,10 @@ function CommonRequestIdManager() {
         },
         // 清除请求的id，把id加一，导致前面发出的请求不可用
         clearRequestId: function() {
+          // requestId等于1說明還沒有發出過請求，所以不需要請求請求id
+          if (this.requestId === 1) {
+              return;
+          }
           return this.addRequestId();
         },
         addRequestId: function() {
@@ -41,4 +45,3 @@ function CommonRequestIdManager() {
           }
         }
     }
-  
